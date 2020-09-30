@@ -128,7 +128,8 @@ function run_model(; payoffs::Payoffs = Payoffs(),
                      gendered::Bool = false, nsteps::Int = 100, 
                      collect_every::Int = 1, n_rounds::Int = 10)
     
-    # Create model without spatial or network structure.
+    # Initialize model. Can optionally provide network or spatial structure,
+    # but for our simple first model we will exclude these.
     model = ABM(Player; properties=Dict(:n_rounds => n_rounds,
                                         :gendered => gendered))
 
