@@ -6,26 +6,29 @@ stereotypes, and builds some models of the emergence of inequality.
 This serves as a prototype/proof-of-concept 
 to support my NSF SPRF grant proposal.
 
+This repository contains some of the basic ingredients necessary for
+the proposed project. For modeling the coordination required for
+men and women to collaborate in the workplace, we use a game theoretic
+analysis of the Nash demand game to represent a man and woman both getting
+hired and negotiating a salary. Our aim is to connect this to semantic representations
+of harmful stereotypes found in culture, quantified using semantic models of
+language. Semantic models of language are based on the distributional hypothesis, which
+states that the meaning of words can be inferred by their co-occurrence patterns with
+other words. I believe these harmful prototypes can be thought of as a cultural norm, which
+has evolved over time, both shaped by and shaping strategies taken by men and women 
+participating in the labor market, which, again, we model using the Nash demand game.
+
+At this point I am just plotting some relevant data, re-running others' analyses, 
+implementing Nash demand ABM for my own benefit, and it may be useful in developing new
+hypotheses. I am also prototyping/wireframing a behavioral experiment in which we will
+either manipulate or measure semantic relationships held by participants before or after
+they play the Nash demand game.
 
 ## Behavioral experiment using Dallinger
 
 Follow [installation steps in the Dallinger documentation](
 https://dallinger.readthedocs.io/en/latest/installing_dallinger_for_users.html)
 to install Dallinger, which will run the online behavioral experiment.
-
-
-## Data-driven regression analysis of gender pay gap and 
-
-Below is a simple first analysis with easy-to-find data as a proof-of-concept
-regarding the idea to connect bias in semantic representations to 
-the gender pay gap. 
-
-
-### Data provenance
-- I obtained the 
-  [pay gap data from the OECD on data.world](https://data.world/oecd/gender-wage-gap).
-- I read the values for bias off the plots in Garg, et al., (2018).
-
 
 ## The model
 
