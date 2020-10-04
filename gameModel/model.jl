@@ -10,14 +10,12 @@ using Agents
 using Statistics: mean
 using Random: shuffle
 
-numagents = 100
-
-@enum Gender woman man
 
 mutable struct Player <: AbstractAgent
     id::Int
-    gender::Gender
+    gender::String
     strategy::String
+    next_strategy::String
     total_payoff::Float64
 end
 
@@ -31,6 +29,7 @@ end
 
 # Define default constructor payoff values.
 Payoffs() = Payoffs(3.0, 5.0, 7.0)
+# Payoffs() = Payoffs(4.5, 5.0, 5.5)
 
 
 function assign_payoffs!(woman::Player, man::Player; 
@@ -84,7 +83,9 @@ function agent_step!(agent, model)
 
     # If teacher is doing better adopt their strategy.
     if teacher.total_payoff > agent.total_payoff
-        agent.strategy = teacher.strategy
+        agent.next_strategy = teacher.strategy
+    else
+        agent.next_strategy = agent.strategy
     end
 
 end
@@ -93,14 +94,16 @@ end
 function model_step!(model::ABM)
 
     function isman(agent::Player)
-        return agent.gender == man
+        return agent.gender == "man"
     end
 
     agents = collect(allagents(model))
     
-    # Reset payoffs for new set of interaction rounds.
+    # Reset payoffs for new set of interaction rounds and update 
+    # strategy to next_strategy.
     for agent in agents
         agent.total_payoff = 0.0
+        agent.strategy = agent.next_strategy
     end
 
     # Separate into women and men (doesn't need to be done every time 
@@ -117,21 +120,28 @@ function model_step!(model::ABM)
         pairs = zip(women, men)
 
         for pair in pairs
-            assign_payoffs!(pair[1], pair[2])
+            assign_payoffs!(pair[1], pair[2];
+                            woman_threat = model.woman_threat,
+                            man_threat = model.man_threat)
         end
     end
 
 end
 
 
-function run_model(; payoffs::Payoffs = Payoffs(),
+function run_model!(; payoffs::Payoffs = Payoffs(),
                      gendered::Bool = false, nsteps::Int = 100, 
-                     collect_every::Int = 1, n_rounds::Int = 10)
+                     collect_every::Int = 1, n_rounds::Int = 10,
+                     numagents::Int = 100,
+                     woman_threat::Float64 = 0.0,
+                     man_threat::Float64 = 0.0)
     
     # Initialize model. Can optionally provide network or spatial structure,
     # but for our simple first model we will exclude these.
     model = ABM(Player; properties=Dict(:n_rounds => n_rounds,
-                                        :gendered => gendered))
+                                        :gendered => gendered,
+                                        :woman_threat => woman_threat,
+                                        :man_threat => man_threat))
 
     # Initialize model agents.
     # First need numagents randomly-selected strategies.
@@ -141,12 +151,12 @@ function run_model(; payoffs::Payoffs = Payoffs(),
     for i in 1:numagents
 
         if i > (numagents / 2)
-            gender = woman
+            gender = "woman"
         else
-            gender = man
+            gender = "man"
         end
-
-        add_agent!(model, gender, String(random_strategies[i]), 0.0)
+        strategy = String(random_strategies[i])
+        add_agent!(model, gender, strategy, strategy, 0.0)
 
     end
 
