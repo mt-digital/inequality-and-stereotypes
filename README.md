@@ -24,17 +24,35 @@ hypotheses. I am also prototyping/wireframing a behavioral experiment in which w
 either manipulate or measure semantic relationships held by participants before or after
 they play the Nash demand game.
 
+
+## The model
+
+In a Julia terminal run
+
+```julia
+include("gameModel/analysis.jl")
+df = replication()
+```
+
+The `replication` function writes the data to file, `"replication.csv"`.
+
+Then in Python, run
+
+```python
+from vis import plot_replication
+plot_replication("replication.csv")
+```
+
+This will create a bar plot of the frequency of different strategies that
+evolve.
+
+More details on the model soon. 
+
 ## Behavioral experiment using Dallinger
 
 Follow [installation steps in the Dallinger documentation](
 https://dallinger.readthedocs.io/en/latest/installing_dallinger_for_users.html)
 to install Dallinger, which will run the online behavioral experiment.
-
-## The model
-
-We want to understand more about how much average and cumulative payoffs 
-increase for women as harmful stereotype prevalence decreases. As harmful
-stereotypes change, the 
 
 
 # References

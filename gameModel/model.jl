@@ -132,7 +132,7 @@ end
 function run_model!(; payoffs::Payoffs = Payoffs(),
                      gendered::Bool = false, nsteps::Int = 100, 
                      collect_every::Int = 1, n_rounds::Int = 10,
-                     numagents::Int = 100,
+                     num_agents::Int = 100,
                      woman_threat::Float64 = 0.0,
                      man_threat::Float64 = 0.0)
     
@@ -144,13 +144,13 @@ function run_model!(; payoffs::Payoffs = Payoffs(),
                                         :man_threat => man_threat))
 
     # Initialize model agents.
-    # First need numagents randomly-selected strategies.
-    random_strategies = rand(fieldnames(Payoffs), numagents)
+    # First need num_agents randomly-selected strategies.
+    random_strategies = rand(fieldnames(Payoffs), num_agents)
     
     # Now populate model with half women, half men.
-    for i in 1:numagents
+    for i in 1:num_agents
 
-        if i > (numagents / 2)
+        if i > (num_agents / 2)
             gender = "woman"
         else
             gender = "man"
